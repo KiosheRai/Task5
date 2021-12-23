@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Task5.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Task5.ViewModels;
+using Task5.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System;
 
-namespace Task5.Controllers
+namespace AuthApp.Controllers
 {
     public class AccountController : Controller
     {
@@ -32,11 +32,11 @@ namespace Task5.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(model.Email); 
+                    await Authenticate(model.Email);
 
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                ModelState.AddModelError("", "Некорректные логин и(или) пароль.");
             }
             return View(model);
         }
@@ -54,7 +54,7 @@ namespace Task5.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
-                    db.Users.Add(new User { Email = model.Email, Password = model.Password, Name = model.Name, RegisterDate = DateTime.Now });
+                    db.Users.Add(new User { Email = model.Email,Name = model.Name, Password = model.Password, RegisterDate = DateTime.Now, LastLoginDate = DateTime.Now, Status = "В сети" });
                     await db.SaveChangesAsync();
 
                     await Authenticate(model.Email);
@@ -62,21 +62,21 @@ namespace Task5.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("", "Пользователь с таким логином уже существует.");
             }
             return View(model);
         }
 
         private async Task Authenticate(string userName)
         {
-            var claims = new List<Claim>
+            var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+            new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
             };
+            
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         public async Task<IActionResult> Logout()

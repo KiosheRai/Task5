@@ -18,7 +18,10 @@ namespace Task5.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return Content(User.Identity.Name);
+            ViewData["Name"] = User.Identity.Name;
+          
+            return View(User.Identity);
+            //return Content(User.Identity.Name);
         }
 
         public IActionResult Privacy()

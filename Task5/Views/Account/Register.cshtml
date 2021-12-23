@@ -1,41 +1,38 @@
 ﻿@model Task5.ViewModels.RegisterModel
-    
+
 <div class="modal modal-signin position-static d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
     <div class="modal-dialog" role="document">
         <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h2 class="fw-bold mb-0">Регистрация</h2>
-            </div>
+            <h2 class="fw-bold m-auto">Регистрация</h2>
 
             <div class="modal-body p-5 pt-0">
                 <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
-                    <div asp-validation-summary="ModelOnly"></div>
-
                     <div class="form-floating mb-3">
-                        <label for="floatingInput">Email address</label>
-                        <input type="email" class="form-control rounded-4" id="floatingInput" placeholder="name@example.com" asp-for="Email">
+                        <label for="floatingInput">Введите почту</label>
+                        <input type="text" asp-for="Email" class="form-control rounded-4" id="floatingInput" placeholder="name@example.com" />
                         <span asp-validation-for="Email" />
                     </div>
                     <div class="form-floating mb-3">
-                        <label for="floatingInput">Your name</label>
-                        <input type="text" class="form-control rounded-4" id="floatingInput" placeholder="Angel" asp-for="Name">
+                        <label for="floatingInput">Введите Имя</label>
+                        <input type="text" asp-for="Name" class="form-control rounded-4" id="floatingInput" placeholder="Adel" />
                         <span asp-validation-for="Name" />
                     </div>
                     <div class="form-floating mb-3">
-                        <label for="floatingPassword">Password</label>
-                        <input type="password" class="form-control rounded-4" id="floatingPassword" placeholder="Password" asp-for="Password">
+                        <label for="floatingPassword">Введите пароль</label>
+                        <input type="password" asp-for="Password" class="form-control rounded-4" id="floatingPassword" placeholder="Password" />
                         <span asp-validation-for="Password" />
                     </div>
                     <div class="form-floating mb-3">
-                        <label for="floatingPassword">Confirm password</label>
-                        <input type="password" class="form-control rounded-4" id="floatingPassword" placeholder="Password" asp-for="ConfirmPassword">
+                        <label for="floatingPassword">Повторите пароль</label>
+                        <input type="password" asp-for="ConfirmPassword" class="form-control rounded-4" id="floatingPassword" placeholder="ConfirmPassword" />
                         <span asp-validation-for="ConfirmPassword" />
                     </div>
-                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign up</button>
+                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Зарегистрироваться</button>
                 </form>
-                <small class="text-muted">
-                    <a asp-action="Login" asp-controller="Account">Go to Login.</a>
-                </small>
+
+                <hr class="my-4">
+                <a class="text-muted" asp-action="Login" asp-controller="Account">Вход</a>
+                <div class="validation" asp-validation-summary="All"></div>
             </div>
         </div>
     </div>
