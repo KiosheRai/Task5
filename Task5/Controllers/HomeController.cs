@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Task5.Models;
 
 namespace Task5.Controllers
@@ -20,9 +20,10 @@ namespace Task5.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(/*User.Identity.Name, db.Users.ToListAsync()*/);
+            ViewData["Email"] = User.Identity.Name;
+            return View(await db.Users.ToListAsync());
         }
 
         public IActionResult Privacy()

@@ -1,13 +1,31 @@
-﻿@model Task5.Models.User 
+﻿@model IEnumerable<Task5.Models.User>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    @*<h1 class="display-4">Welcome: @Model.Email</h1>
-    <p>Имя: @Model.Name</p>
-    <p>Дата регистрации: @Model.RegisterDate</p>
-    <p>Дата последнего входа: @Model.LastLoginDate</p>
-    <p>Статус: @Model.Status</p>*@
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>RegisterDate</th>
+                <th>LastLoginDate</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Email</td>
+                    <td>@item.Name</td>
+                    <td>@item.RegisterDate.ToShortDateString()</td>
+                    <td>@item.LastLoginDate.ToShortDateString()</td>
+                    <td>@item.Status</td>
+                </tr>
+            }
+    </table>
 </div>

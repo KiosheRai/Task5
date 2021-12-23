@@ -25,8 +25,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+
+                    <span class="nav-link text-dark">@ViewData["Email"]</span>
                     <a class="nav-link text-primary" asp-controller="Account" asp-action="Logout" type="button">Выход</a>
-                    
                 </div>
             </div>
         </nav>
