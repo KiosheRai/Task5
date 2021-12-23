@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Task5.Models
 {
@@ -11,5 +12,7 @@ namespace Task5.Models
         public DateTime RegisterDate { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string Status { get; set; }
+
+        //IEnumerable<User> UsersList { get; set; }
     }
 }

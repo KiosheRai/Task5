@@ -33,7 +33,8 @@ namespace AuthApp.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Email);
-
+                    await EditStatus("В сети", model.Email);
+                    await EditTimeLogin(model.Email);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль.");
@@ -82,7 +83,36 @@ namespace AuthApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await EditStatus("Не в сети", User.Identity.Name);
             return RedirectToAction("Login", "Account");
+        }
+
+        public async Task<IActionResult> EditStatus(string s, string Email) //Repetition
+        {
+            if (Email != null)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Email == Email);
+                if (user != null)
+                {
+                    user.Status = s; 
+                    await db.SaveChangesAsync();
+                }
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> EditTimeLogin(string Email) //Repetition
+        {
+            if (Email != null)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Email == Email);
+                if (user != null)
+                {
+                    user.LastLoginDate = DateTime.Now;
+                    await db.SaveChangesAsync();
+                }
+            }
+            return NotFound();
         }
     }
 }
