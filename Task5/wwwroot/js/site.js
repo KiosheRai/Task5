@@ -1,4 +1,5 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿
+function check(field, flag) {
+    if (flag == 1) { for (i = 0; i < field.length; i++) field[i].checked = true; }
+    else { for (i = 0; i < field.length; i++) field[i].checked = false; }
+}

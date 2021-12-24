@@ -5,27 +5,73 @@
 }
 
 <div class="text-center">
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th>RegisterDate</th>
-                <th>LastLoginDate</th>
-                <th>Status</th>
-            </tr>
-        </thead>
+    <form asp-action="Delete" asp-controller="Home" method="post">
+
+        <div class="row mb-2">
+            <div class="col-lg-2">
+                <input class="btn btn-outline-primary" type="button" value="Выделить все" onclick="check(this.form.list, 1)">
+            </div>
+            <div class="col-lg-2">
+                <input class="btn btn-outline-primary" type="button" value="Снять выделение" onclick="check(this.form.list, 0)">
+            </div>
+            <div class="col-lg-1">
+                <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action="Block">Block</a>
+            </div>
+            <div class="col-lg-1">
+                <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action="UnBlock">UnBlock</a>
+            </div>
+            <div class="col-lg-1">
+                <a class="btn btn-outline-danger" asp-area="" asp-controller="Home" asp-action="Delete">Delete</a>
+            </div>
+        </div>
+
+        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Войти</button>
+
+        <hr class="my-4">
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>CheckBox</th>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>RegisterDate</th>
+                    <th>LastLoginDate</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
             @foreach (var item in Model)
             {
                 <tr>
-                    <th scope="row">@item.Id</th>
-                    <td>@item.Email</td>
-                    <td>@item.Name</td>
-                    <td>@item.RegisterDate.ToShortDateString()</td>
-                    <td>@item.LastLoginDate.ToShortDateString()</td>
-                    <td>@item.Status</td>
+                    <th scope="row">
+                        <input type="checkbox"
+                               name="SelectedUser"
+                               value="@item.Id" />
+                               @item.Id
+                    </th>
+                        <td>@item.Email</td>
+                        <td>@item.Name</td>
+                        <td>@item.RegisterDate.ToShortDateString()</td>
+                        <td>@item.LastLoginDate.ToShortDateString()</td>
+
+                        @{ if (item.Status == "В сети")
+                            {
+                                <td class="text-success">@item.Status</td>
+                            }
+                            else if (item.Status == "Заблокирован")
+                            {
+                                <td class="text-danger">@item.Status</td>
+                            }
+                            else
+                            {
+                                <td>@item.Status</td>
+                            }
+                        }
                 </tr>
             }
-    </table>
+        </table>
+    </form>
 </div>
+
+
