@@ -21,18 +21,17 @@
                 <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action="UnBlock">UnBlock</a>
             </div>
             <div class="col-lg-1">
-                <a class="btn btn-outline-danger" asp-area="" asp-controller="Home" asp-action="Delete">Delete</a>
+                <input class="btn btn-outline-danger" type="button" asp-controller="Home" asp-action="Delete" value="Delete"/>
             </div>
         </div>
 
-        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Войти</button>
+        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit" onclick="SelectedCheckbox()">Войти</button>
 
         <hr class="my-4">
 
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th>CheckBox</th>
                     <th>ID</th>
                     <th>Email</th>
                     <th>Name</th>
@@ -46,8 +45,9 @@
                 <tr>
                     <th scope="row">
                         <input type="checkbox"
-                               name="SelectedUser"
-                               value="@item.Id" />
+                               name="list"
+                               value="@item.Id"
+                               id="@item.Id"/>
                                @item.Id
                     </th>
                         <td>@item.Email</td>
@@ -73,5 +73,5 @@
         </table>
     </form>
 </div>
-
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 

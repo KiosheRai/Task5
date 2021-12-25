@@ -28,10 +28,9 @@ namespace Task5.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(User model)
+        public ActionResult Index(string[] list)
         {
-            
-            return View();
+            return Content(list.ToString());
         }
 
         public IActionResult Privacy()
@@ -46,17 +45,26 @@ namespace Task5.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(User model)
+        public async Task<IActionResult> Delete(string[] list)
         {
-            if (ModelState.IsValid)
+            bool isYouAccount = false;
+            foreach (var x in list)
             {
-                var fruits = string.Join(",", model.Id);
-
-                // Save data to database, and redirect to Success page.
-
-                return Content(model.Id.ToString());
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
+                
+                if(user.Email == User.Identity.Name)
+                {
+                    isYouAccount = true;
+                }
+                db.Users.Remove(user);
+                db.SaveChanges();
             }
-            return Content("Error");
+
+            if (isYouAccount)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return RedirectToAction("Index"); 
         }
     }
 }
