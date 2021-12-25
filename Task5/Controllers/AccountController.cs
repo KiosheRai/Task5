@@ -30,14 +30,21 @@ namespace AuthApp.Controllers
             if (ModelState.IsValid)
             {
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if (user != null)
+                if (user != null && user.Status != "Заблокирован")
                 {
                     await Authenticate(model.Email);
                     await EditStatus("В сети", model.Email);
                     await EditTimeLogin(model.Email);
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль.");
+                if (user != null && user.Status == "Заблокирован")
+                {
+                    ModelState.AddModelError("", "Пользователь заблокирован");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль.");
+                }
             }
             return View(model);
         }

@@ -45,14 +45,31 @@ namespace Task5.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Edit(string[] list, string action) 
+        {
+            if(action == "Delete")
+            {
+                return await Delete(list);
+            }
+            else if(action == "Block")
+            {
+                return await Block(list);
+            }
+            else
+            {
+                return await UnBlock(list);
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete(string[] list)
         {
             bool isYouAccount = false;
             foreach (var x in list)
             {
                 User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
-                
-                if(user.Email == User.Identity.Name)
+
+                if (user.Email == User.Identity.Name)
                 {
                     isYouAccount = true;
                 }
@@ -64,7 +81,42 @@ namespace Task5.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Block(string[] list)
+        {
+            bool isYouAccount = false;
+            foreach (var x in list)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
+
+                if (user.Email == User.Identity.Name)
+                {
+                    isYouAccount = true;
+                }
+                user.Status = "Заблокирован";
+                db.SaveChanges();
+            }
+
+            if (isYouAccount)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UnBlock(string[] list)
+        {
+            foreach (var x in list)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
+                user.Status = "Нет в сети";
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
     }
 }
