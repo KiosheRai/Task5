@@ -113,8 +113,11 @@ namespace Task5.Controllers
             foreach (var x in list)
             {
                 User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
-                user.Status = "Нет в сети";
-                db.SaveChanges();
+                if (user.Email != User.Identity.Name)
+                {
+                    user.Status = "Нет в сети";
+                    db.SaveChanges();
+                }
             }
             return RedirectToAction("Index");
         }
