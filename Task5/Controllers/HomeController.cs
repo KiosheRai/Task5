@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Task5.Models;
 
@@ -19,13 +20,20 @@ namespace Task5.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "admin, user")]
+        public IActionResult Index()
         {
-            ViewData["Email"] = User.Identity.Name;
-            return View(await db.Users.ToListAsync());
+            string role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+            return Content($"ваша роль: {role}");
         }
+
+        //[Authorize]
+        //[HttpGet]
+        //public async Task<IActionResult> Index()
+        //{
+        //    ViewData["Email"] = User.Identity.Name;
+        //    return View(await db.Users.ToListAsync());
+        //}
 
         [HttpPost]
         public ActionResult Index(string[] list)

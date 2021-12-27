@@ -13,6 +13,7 @@ namespace Task5.Models
         public DateTime LastLoginDate { get; set; }
         public string Status { get; set; }
 
-        //IEnumerable<User> UsersList { get; set; }
+        public int? RoleId { get; set; }
+        public Role Role { get; set; }
     }
 }
