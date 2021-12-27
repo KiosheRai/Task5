@@ -29,7 +29,9 @@ namespace AuthApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                User user = await db.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null && user.Status != "Заблокирован")
                 {
                     await Authenticate(user);

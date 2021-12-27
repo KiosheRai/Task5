@@ -19,7 +19,7 @@ namespace Task5.Models
 
             Role adminRole = new Role { Id = 1, Name = adminRoleName };
             Role userRole = new Role { Id = 2, Name = userRoleName };
-            User adminUser = new User { Id = 1, Email = "admin@mail.ru", Password = "1234", RoleId = adminRole.Id, Status="Не в сети"  };
+            User adminUser = new User { Id = 1, Email = "admin@mail.ru", Password = "1234", RoleId = adminRole.Id, Status="Не в сети"};
 
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
             modelBuilder.Entity<User>().HasData(new User[] { adminUser });
