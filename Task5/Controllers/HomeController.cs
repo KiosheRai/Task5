@@ -20,20 +20,16 @@ namespace Task5.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "admin, user")]
-        public IActionResult Index()
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            string role = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
-            return Content($"ваша роль: {role}");
+            ViewData["Email"] = User.Identity.Name;
+            var x = await db.Users
+                .Include(u => u.Role)
+                .ToListAsync();
+            return View(x);
         }
-
-        //[Authorize]
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    ViewData["Email"] = User.Identity.Name;
-        //    return View(await db.Users.ToListAsync());
-        //}
 
         [HttpPost]
         public ActionResult Index(string[] list)
@@ -62,6 +58,14 @@ namespace Task5.Controllers
             else if(action == "Block")
             {
                 return await Block(list);
+            }
+            else if(action == "SetAdminRole") 
+            {
+                return await SetAdminRole(list);
+            }
+            else if(action == "SetUserRole")
+            {
+                return await SetUserRole(list);
             }
             else
             {
@@ -126,6 +130,51 @@ namespace Task5.Controllers
                     user.Status = "Нет в сети";
                     db.SaveChanges();
                 }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetAdminRole(string[] list)
+        {
+            foreach (var x in list)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
+                Role adminRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "admin");
+                if (adminRole != null)
+                    user.Role = adminRole;
+
+                user.Role = adminRole;
+
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetUserRole(string[] list)
+        {
+            bool isYouAccount = false;
+            foreach (var x in list)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(p => p.Id.ToString() == x);
+                Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                if (userRole != null)
+                    user.Role = userRole;
+
+                if (user.Email == User.Identity.Name)
+                {
+                    isYouAccount = true;
+                }
+
+                user.Role = userRole;
+
+                db.SaveChanges();
+            }
+
+            if (isYouAccount)
+            {
+                return RedirectToAction("Login", "Account");
             }
             return RedirectToAction("Index");
         }

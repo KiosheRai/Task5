@@ -8,29 +8,39 @@
     @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
     {
 
-        <div class="row mb-2">
-            <div class="col-lg-2">
-                <input class="btn btn-outline-primary" type="button" value="Выделить все" onclick="check(this.form.list, 1)">
-            </div>
-            <div class="col-lg-2">
-                <input class="btn btn-outline-primary" type="button" value="Снять выделение" onclick="check(this.form.list, 0)">
-            </div>
-            <div class="col-lg-1 ml-lg-5">
-                <button class="btn" type="submit" onclick="SelectedCheckbox()" name="action" value="Block">
-                    <img src="~/icons/minuscircleflat_106029.png" alt="Block" title="Block"/>
-                </button>
-            </div>
-            <div class="col-lg-1">
-                <button class="btn" type="submit" onclick="SelectedCheckbox()" name="action" value="UnBlock">
-                    <img src="~/icons/undoflat_106020.png" alt="UnBlock" title="UnBlock"/>
-                </button>
-            </div>
-            <div class="col-lg-1">
-                <button class="btn" type="submit" onclick="SelectedCheckbox()" name="action" value="Delete">
-                    <img src="~/icons/trash_bin_icon-icons.com_67981.png" alt="Delete" title="Delete"/>
-                </button>
-            </div>
+    <div class="row mb-2">
+        <div class="col-lg-2">
+            <input class="btn btn-outline-primary" type="button" value="Выделить все" onclick="check(this.form.list, 1)">
         </div>
+        <div class="col-lg-2">
+            <input class="btn btn-outline-primary" type="button" value="Снять выделение" onclick="check(this.form.list, 0)">
+        </div>
+        <div class="col-lg-1 ml-lg-5">
+            <button class="btn" type="submit" onclick="SelectedCheckbox()" name="action" value="Block">
+                <img src="~/icons/minuscircleflat_106029.png" alt="Block" title="Block" />
+            </button>
+        </div>
+        <div class="col-lg-1">
+            <button class="btn" type="submit" onclick="SelectedCheckbox()" name="action" value="UnBlock">
+                <img src="~/icons/undoflat_106020.png" alt="UnBlock" title="UnBlock" />
+            </button>
+        </div>
+        <div class="col-lg-1">
+            <button class="btn" type="submit" onclick="SelectedCheckbox()" name="action" value="Delete">
+                <img src="~/icons/trash_bin_icon-icons.com_67981.png" alt="Delete" title="Delete" />
+            </button>
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-outline-primary" type="submit" onclick="SelectedCheckbox()" name="action" value="SetAdminRole">
+                SetAdminRole
+            </button>
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-outline-primary" type="submit" onclick="SelectedCheckbox()" name="action" value="SetUserRole">
+                SetUserRole
+            </button>
+        </div>
+    </div>
 
         <hr class="my-4">
 
@@ -43,37 +53,39 @@
                     <th>RegisterDate</th>
                     <th>LastLoginDate</th>
                     <th>Status</th>
+                    <th>Role</th>
                 </tr>
             </thead>
             @foreach (var item in Model)
             {
-                <tr>
-                    <th scope="row">
-                        <input type="checkbox"
-                               name="list"
-                               value="@item.Id"
-                               id="@item.Id" />
-                        @item.Id
-                    </th>
-                    <td>@item.Email</td>
-                    <td>@item.Name</td>
-                    <td>@item.RegisterDate.ToShortDateString()</td>
-                    <td>@item.LastLoginDate.ToShortDateString()</td>
+        <tr>
+            <th scope="row">
+                <input type="checkbox"
+                       name="list"
+                       value="@item.Id"
+                       id="@item.Id" />
+                @item.Id
+            </th>
+            <td>@item.Email</td>
+            <td>@item.Name</td>
+            <td>@item.RegisterDate.ToShortDateString()</td>
+            <td>@item.LastLoginDate.ToShortDateString()</td>
 
-                    @{ if (item.Status == "В сети")
-                        {
-                            <td class="text-success">@item.Status</td>
-                        }
-                        else if (item.Status == "Заблокирован")
-                        {
-                            <td class="text-danger">@item.Status</td>
-                        }
-                        else
-                        {
-                            <td>@item.Status</td>
-                        }
-                    }
-                </tr>
+            @{ if (item.Status == "В сети")
+                {
+                    <td class="text-success">@item.Status</td>
+                }
+                else if (item.Status == "Заблокирован")
+                {
+                    <td class="text-danger">@item.Status</td>
+                }
+                else
+                {
+                    <td>@item.Status</td>
+                }
+            }
+            <td>@item.Role.Name</td>
+        </tr>
                         }
         </table>
                         }
