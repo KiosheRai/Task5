@@ -1,5 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Task5.Models.User>
+
 @{
+    ViewData["Title"] = "Home Page";
 }
+
+<div class="text-center">
+    @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
+    {
+        <hr class="my-4">
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>RegisterDate</th>
+                    <th>LastLoginDate</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+        <tr>
+            <th>@item.Id</th>
+            <td>@item.Email</td>
+            <td>@item.Name</td>
+            <td>@item.RegisterDate.ToShortDateString()</td>
+            <td>@item.LastLoginDate.ToShortDateString()</td>
+
+            @{ if (item.Status == "В сети")
+                {
+                    <td class="text-success">@item.Status</td>
+                }
+                else if (item.Status == "Заблокирован")
+                {
+                    <td class="text-danger">@item.Status</td>
+                }
+                else
+                {
+                    <td>@item.Status</td>
+                }
+            }
+
+            <td>
+                <a asp-action="Send" asp-controller="UserPanel" asp-route-Email="@item.Email">Написать</a>
+            </td>
+        </tr>
+                
+            }
+        </table>
+    }
+</div>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+

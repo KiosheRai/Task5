@@ -37,7 +37,8 @@ namespace AuthApp.Controllers
                     await Authenticate(user);
                     await EditStatus("В сети", model.Email);
                     await EditTimeLogin(model.Email);
-                    return RedirectToAction("Index", "Home");
+
+                    return await RederectToRole(user);
                 }
                 if (user != null && user.Status == "Заблокирован")
                 {
@@ -50,6 +51,16 @@ namespace AuthApp.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> RederectToRole(User user)
+        {
+            if(user.Role.Name == "admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "UserPanel");
+        }
+
         [HttpGet]
         public IActionResult Register()
         {

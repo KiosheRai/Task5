@@ -7,6 +7,7 @@ namespace Task5.Models
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<TextMessage> Messages { get; set; }
         public UsersContext(DbContextOptions<UsersContext> options)
             : base(options)
         {

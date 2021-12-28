@@ -1,0 +1,21 @@
+﻿@model Task5.Models.TextMessage
+
+<div class="text-center">
+    <div class="modal modal-signin position-static d-block py-5" tabindex="-1" role="dialog" id="modalSignin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-5 shadow">
+                <h2 class="fw-bold m-auto">Сообщение</h2>
+                <small class="text-center">Получатель: @Model.Recipient</small>
+                <div class="modal-body p-5 pt-0">
+                   @using(Html.BeginForm("Send", "UserPanel", FormMethod.Post))
+                    {
+                        <div class="form-floating mb-3">
+                            <input type="text" asp-for="Text" class="form-control rounded-4" id="floatingInput" placeholder="Введите текст" />
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit" asp-route-email="@Model.Recipient">Отправить</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Task5.Models;
 
@@ -11,13 +10,11 @@ namespace Task5.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private UsersContext db;
 
         public HomeController(ILogger<HomeController> logger, UsersContext context)
         {
             db = context;
-            _logger = logger;
         }
 
         [Authorize(Roles = "admin")]
