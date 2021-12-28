@@ -75,7 +75,7 @@ namespace AuthApp.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
-                    user = new User { Email = model.Email,Name = model.Name, Password = model.Password, RegisterDate = DateTime.Now, LastLoginDate = DateTime.Now, Status = "В сети" };
+                    user = new User { Email = model.Email,Name = model.Name, Password = model.Password, RegisterDate = DateTime.Now, LastLoginDate = DateTime.Now, Status = "Не в сети" };
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
                         user.Role = userRole;
